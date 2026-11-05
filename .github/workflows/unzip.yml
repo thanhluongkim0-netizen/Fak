@@ -1,0 +1,23 @@
+name: Unzip Code
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Unzip file
+        run: |
+          unzip *.zip
+          rm *.zip
+          mv * .* .. 2>/dev/null || true
+          
+      - name: Commit unzipped files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Extract zip files automatically"
